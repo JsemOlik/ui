@@ -1,0 +1,10 @@
+{
+  "name": "@jsemolik/ui",
+  "items": [
+    {
+      "name": "navbar",
+      "type": "registry:component",
+      "path": "components/navbar"
+    }
+  ]
+}

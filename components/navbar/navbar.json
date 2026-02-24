@@ -1,0 +1,11 @@
+{
+  "name": "navbar",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "components/navbar/navbar.tsx",
+      "target": "components/navbar.tsx"
+    }
+  ],
+  "dependencies": ["button"]
+}
