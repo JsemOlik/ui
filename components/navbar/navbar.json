@@ -2,12 +2,11 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "navbar",
   "type": "registry:component",
+  "registryDependencies": ["button"],
   "files": [
     {
       "path": "navbar.tsx",
-      "type": "registry:component",
-      "target": "components/navbar.tsx"
+      "type": "registry:component"
     }
-  ],
-  "dependencies": ["button"]
+  ]
 }
