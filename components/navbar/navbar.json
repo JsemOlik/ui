@@ -3,9 +3,9 @@
   "type": "registry:component",
   "files": [
     {
-      "path": "components/navbar/navbar.tsx",
+      "path": "navbar.tsx",
+      "type": "registry:component",
       "target": "components/navbar.tsx"
     }
-  ],
-  "dependencies": ["button"]
+  ]
 }
