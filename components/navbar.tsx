@@ -1,123 +1,80 @@
 "use client";
 
-import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
-// Variants for the inner <nav> element (handles the background, border, and shape)
-const navbarVariants = cva(
-  "mx-auto flex items-center justify-between transition-all duration-300 ease-in-out",
-  {
-    variants: {
-      variant: {
-        default: "w-full bg-background/0 px-8 py-4 border-transparent",
-        floating:
-          "max-w-5xl w-full bg-background/80 backdrop-blur-md border border-border shadow-sm rounded-full px-6 py-3",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  },
-);
+export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
 
-// Variants for the outer <header> wrapper (handles the positioning and padding)
-const navbarWrapperVariants = cva(
-  "fixed top-0 inset-x-0 z-50 transition-all duration-300 ease-in-out",
-  {
-    variants: {
-      variant: {
-        default: "pt-0 px-0",
-        floating: "pt-4 px-4",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  },
-);
-
-export interface NavbarProps
-  extends React.ComponentProps<"nav">, VariantProps<typeof navbarVariants> {
-  /**
-   * At what scroll position (in px) the navbar should detach and become floating.
-   * Only applies when variant is "default".
-   * @default 20
-   */
-  scrollThreshold?: number;
-}
-
-function Navbar({
-  className,
-  variant = "default",
-  scrollThreshold = 20,
-  ...props
-}: NavbarProps) {
-  const [isScrolled, setIsScrolled] = React.useState(false);
-
-  React.useEffect(() => {
-    // If the user explicitly wants it floating at all times, skip the scroll listener
-    if (variant === "floating") return;
-
+  useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > scrollThreshold);
+      setScrolled(window.scrollY > 20);
     };
-
-    // Check initial scroll position
-    handleScroll();
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrollThreshold, variant]);
-
-  // Determine which visual state to show based on props and scroll state
-  const activeVariant =
-    variant === "floating" || isScrolled ? "floating" : "default";
+  }, []);
 
   return (
-    <header className={cn(navbarWrapperVariants({ variant: activeVariant }))}>
+    // Sticky wrapper — always occupies the top of the page so content below
+    // doesn't shift when the navbar transitions to "floating" mode.
+    <div className="sticky top-0 z-50 w-full flex justify-center px-4 pt-0">
       <nav
-        data-slot="navbar"
-        data-variant={activeVariant}
-        className={cn(navbarVariants({ variant: activeVariant, className }))}
-        {...props}
+        className={cn(
+          // Base styles
+          "w-full flex items-center justify-between px-6 h-14",
+          "transition-all duration-300 ease-in-out",
+
+          // Default (attached) state
+          !scrolled && [
+            "bg-background border-b border-border",
+            "rounded-none shadow-none",
+            "mt-0",
+          ],
+
+          // Scrolled (floating) state
+          scrolled && [
+            "bg-background/80 backdrop-blur-md",
+            "border border-border",
+            "rounded-2xl shadow-lg shadow-black/10",
+            "mt-3 max-w-4xl",
+          ],
+        )}
       >
-        {/* Left: Logo */}
+        {/* Logo / Brand */}
+        <a href="/" className="font-semibold text-base tracking-tight">
+          Acme
+        </a>
+
+        {/* Nav links */}
+        <div className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+          <a href="#" className="hover:text-foreground transition-colors">
+            Features
+          </a>
+          <a href="#" className="hover:text-foreground transition-colors">
+            Pricing
+          </a>
+          <a href="#" className="hover:text-foreground transition-colors">
+            Docs
+          </a>
+        </div>
+
+        {/* CTA */}
         <div className="flex items-center gap-2">
           <a
-            href="/"
-            className="flex items-center gap-2 text-lg font-bold tracking-tight hover:opacity-80 transition-opacity"
+            href="#"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            <div className="size-6 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground text-xs font-black">
-                P
-              </span>
-            </div>
-            pyro
+            Sign in
           </a>
-        </div>
-
-        {/* Middle: Links */}
-        <div className="hidden md:flex items-center gap-6">
           <a
-            href="/about"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            href="#"
+            className="text-sm bg-foreground text-background px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
           >
-            About Us
+            Get started
           </a>
-        </div>
-
-        {/* Right: Actions */}
-        <div className="flex items-center gap-4">
-          <Button variant="default" className="rounded-full px-6">
-            Get Started
-          </Button>
         </div>
       </nav>
-    </header>
+    </div>
   );
 }
-
-export { Navbar, navbarVariants };
