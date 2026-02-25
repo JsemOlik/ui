@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": false,
+
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+
+    "allowImportingTsExtensions": false,
+  },
+  "include": ["src/cli.ts", "src/commands/**/*", "src/utils/**/*"],
+}
