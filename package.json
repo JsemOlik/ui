@@ -3,10 +3,14 @@
   "version": "0.0.1",
   "type": "module",
   "bin": {
-    "jsemolik-ui": "./src/cli.ts"
+    "jsemolik-ui": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsup src/cli.ts --format esm --dts false"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "tsup": "^8.5.1",
     "typescript": "^5.0.0"
   },
   "peerDependencies": {
